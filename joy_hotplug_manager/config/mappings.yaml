@@ -1,0 +1,66 @@
+# 複数ジョイスティックに対して、検出条件とボタン/軸マッピングを定義
+# match は以下のいずれかを使用:
+#  - name_regex: udev の "NAME" / デバイスの product 名でマッチ
+#  - vid_pid: "vvvv:pppp" 形式 (16進, 先頭0埋め)
+# joy_linux のデバイス指定は以下の優先順:
+#  - device_name (name_regexと組み合わせ)
+#  - dev (例: /dev/input/js0)  ※固定したい場合のみ
+
+mappings:
+  - id: "logitech_f310"
+    match:
+      name_regex: "Logitech.*F310"
+      # vid_pid: "046d:c21d"  # こちらでも可
+    joy_linux:
+      # device_name を使う例（推奨：自動で該当 jsX を掴む）
+      device_name: "Logitech Gamepad F310"
+      # dev: "/dev/input/js0"  # 明示固定したい場合のみ
+    buttons:
+      ARM: 0      # A
+      DISARM: 1   # B
+      MODE: 2     # X
+    axes:
+      LX: 0
+      LY: 1
+      RX: 3
+      RY: 4
+      invert:
+        - LY
+        - RY
+    twist:
+      linear_x: "LY"
+      angular_z: "RX"
+      scale:
+        linear_x: 1.0
+        angular_z: 1.0
+
+  - id: "dualshock4"
+    match:
+      name_regex: "(Wireless Controller|DualShock)"
+    joy_linux:
+      device_name: "Wireless Controller"
+    buttons:
+      ARM: 1      # ×
+      DISARM: 2   # ○
+      MODE: 3     # △
+    axes:
+      LX: 0
+      LY: 1
+      RX: 2
+      RY: 5
+      invert:
+        - LY
+        - RY
+    twist:
+      linear_x: "LY"
+      angular_z: "RX"
+      scale:
+        linear_x: 0.8
+        angular_z: 1.2
+
+# 既定（該当なし時）
+fallback:
+  id: "generic"
+  buttons: {}
+  axes: {}
+  twist: {}
